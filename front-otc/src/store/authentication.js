@@ -10,7 +10,7 @@ export const setUser = user => ({
 
 export const login = (email,password) => async dispatch =>{
     const response = await fetch(`/api/session`,{
-        method:'put',
+        method:'post',
         headers:{'Content-Type': 'application/json'},
         body: JSON.stringify({email,password},)
     });
