@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import {login} from '../store/authentication';
 
-function Login (){
 
+function LoginPanel ({currentUserId, login}){
+    const [email, setEmail] = useState('demo@example.com');
+    const [password, setPassword] =useState('password');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        login(email,password);
+    }
+
+    const updateEmail = e => setEmail(e.target.value);
+    const updatePassword = e => setPassword(e.target.value);
+
+    if(currentUserId) {
+        return <Redirect to='/' />;
+    }
 
     return (
         <form onSumbit={handleSubmit}>
@@ -12,5 +29,16 @@ function Login (){
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        currentUserId: state.authentication.id,
+    }
+}
+const mapDistpatchToProps = dispatch => {
+    return {
+        login:(email,password) => dispatch(login(email,password))
+    }
+}
 
-export default Login;
+
+export default connect(mapStateToProps,mapDistpatchToProps)(LoginPanel);
